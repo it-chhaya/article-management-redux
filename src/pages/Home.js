@@ -1,37 +1,27 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { Col, Container, Row } from 'react-bootstrap'
-import { Link } from 'react-router-dom'
+import { connect } from 'react-redux'
 import ArticleCard from '../components/ArticleCard'
-import ArticleService from '../services/ArticleService'
+import { fetchBooks } from '../services/actions/bookAction'
 
-const Home = () => {
-
-	const [posts, setPosts] = useState([
-		{
-			userId: 0,
-			id: 0,
-			title:'',
-			body: '',
-		},
-	])
+const Home = (props) => {
 
     useEffect(() => {
-        ArticleService.fetchPosts()
-            .then(res => {
-                setPosts(res)
-            })
+		// Call API
+		props.fetchBooks()
+		console.log(props.books)
     }, [])
 
 	return (
 		<Container className="mt-4">
 			<Row className='g-2'>
-				{ posts && posts.map(post => (
+				{ props.books && props.books.map(book => (
                     <Col md={4}>
 					    <ArticleCard
-                            id={post.id}
-                            title={post.title}
-                            userId={post.userId}
-                            body={post.body} />
+                            id={book.id}
+                            title={book.title}
+                            userId={book.description}
+                            body={book.author} />
 				    </Col>
                 )) }
 			</Row>
@@ -39,4 +29,10 @@ const Home = () => {
 	)
 }
 
-export default Home
+const mTp = (store) => {
+	return {
+		books: store.bookR.books
+	}
+}
+
+export default connect(mTp, {fetchBooks}) (Home)

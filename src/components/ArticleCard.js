@@ -1,7 +1,23 @@
+import { useEffect } from 'react';
+import { Button } from 'react-bootstrap';
 import Card from 'react-bootstrap/Card';
-import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { Link, useNavigate } from 'react-router-dom';
+import { fetchBooks, removeBookById } from '../services/actions/bookAction'
 
 function ArticleCard(props) {
+
+  const navigate = useNavigate()
+
+  const onRemove = (id) => {
+    props.removeBookById(id)
+  }
+
+  // useEffect(() => {
+  //   props.fetchBooks()
+  // }, [])
+
+
   return (
     <Card>
       <Card.Body>
@@ -10,11 +26,17 @@ function ArticleCard(props) {
         <Card.Text>
           {props.body}
         </Card.Text>
-        <Link to={'/remove'} className='text-danger'>Remove</Link>
+        <Button onClick={() => onRemove(props.id)} className='text-danger btn-link'>Remove</Button>
         <Link to={'/read/' + props.id } className='text-primary'>View</Link>
       </Card.Body>
     </Card>
   );
 }
 
-export default ArticleCard;
+const mTp = (store) => {
+  return {
+    books: store.bookR.books
+  }
+}
+
+export default connect(mTp, {fetchBooks, removeBookById}) (ArticleCard);

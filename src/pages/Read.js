@@ -1,37 +1,36 @@
 import { useEffect, useState } from 'react'
 import { Col, Container, Row } from 'react-bootstrap'
+import { connect } from 'react-redux'
 import { useParams } from 'react-router-dom'
-import ArticleService from '../services/ArticleService'
+import { fetchBookById } from '../services/actions/bookAction'
 
-const Read = () => {
-    
-	const [post, setPost] = useState({
-		id: 0,
-		userId: 0,
-		title: '',
-		body: '',
-	})
+const Read = (props) => {
 
 	const { id } = useParams()
 
 	useEffect(() => {
-		ArticleService.fetchPostById(id).then((res) => {
-			setPost(res)
-		})
+		props.fetchBookById(id)
+		console.log(props.book)
 	}, [])
 
 	return (
 		<Container>
-			<Row className='justify-content-center'>
+			<Row className="justify-content-center">
 				<Col md={8}>
-					<h1>{post.title}</h1>
+					<h1>{props.book.title}</h1>
 					<hr />
-					<h4>User Id = {post.userId}</h4>
-					<p>{post.body}</p>
+					<h4>{props.book.description}</h4>
+					<p>{props.book.author}</p>
 				</Col>
 			</Row>
 		</Container>
 	)
 }
 
-export default Read
+const mTp = (store) => {
+	return {
+		book: store.bookR.book,
+	}
+}
+
+export default connect(mTp, { fetchBookById }) (Read)
