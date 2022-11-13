@@ -37,11 +37,11 @@ export const removeBookById = (id) => {
         })
         .then(res => res.json())
         .then(json => {
-            console.log(json)
             dispatch({
                 type: actionTypes.remove_book_id,
-                payload: json
+                payload: json.data
             })
+
         })
     }
 }

@@ -9,19 +9,18 @@ const Home = (props) => {
     useEffect(() => {
 		// Call API
 		props.fetchBooks()
-		console.log(props.books)
     }, [])
 
 	return (
 		<Container className="mt-4">
 			<Row className='g-2'>
 				{ props.books && props.books.map(book => (
-                    <Col md={4}>
+                    <Col md={4} key={book.id}>
 					    <ArticleCard
                             id={book.id}
                             title={book.title}
-                            userId={book.description}
-                            body={book.author} />
+                            description={book.description}
+                            author={book.author} />
 				    </Col>
                 )) }
 			</Row>

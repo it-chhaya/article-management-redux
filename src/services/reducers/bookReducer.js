@@ -12,6 +12,11 @@ export const bookReducer = (state = initStates, action) => {
             return {...state, books: action.payload}
         case actionTypes.fetch_book_id:
             return {...state, book: action.payload}
+        case actionTypes.remove_book_id:
+            return {
+                ...state, books: [...state.books.filter( book => 
+                    book.id !== action.payload)]
+            }
         default:
             return state
     }
